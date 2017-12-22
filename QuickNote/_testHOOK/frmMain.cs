@@ -11,21 +11,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace _testHOOK
+namespace QuickNote
 {
-    public partial class Form1 : Form
+    public partial class frmMain : Form
     {
         private List<Keys> _ListKeys = new List<Keys>();
         private List<ANote> _listNote = new List<ANote>();
         string[] _listNameFile = null;
-        private string dataPath = Application.StartupPath + @"\DataNote\CurrNote";
+
         private List<string> _listTag = new List<string>();
+
+        public FontFamily[] Families { get; }
         /// <summary>
         /// thread hooking
         /// </summary>
-        Thread _thrHook = null;
-        UserActivityHook _uAH;
-        public Form1()
+
+        public frmMain()
         {
             InitializeComponent();
         }
@@ -34,11 +35,11 @@ namespace _testHOOK
         {
             panelAdd.Hide();
             pnEdit.Hide();
-            _thrHook = new Thread(new ThreadStart(initsHookKey));
-            _thrHook.Start();
+            loadDataCbbFont();
+            initsHookKey();
             loadDataTreeView();
-            // notifyIcon1.ShowBalloonTip(5000, " ", " ", ToolTipIcon.Info);
-            showThisForm(true);
+            notifyIcon1.ShowBalloonTip(5000, " ", " ", ToolTipIcon.Info);
+            showThisForm(false);
         }
         void loadDataTreeView()
         {
@@ -116,22 +117,22 @@ namespace _testHOOK
         }
         void initsHookKey()
         {
-            _uAH = new UserActivityHook();
+            UserActivityHook _uAH = new UserActivityHook(false, true);
             _uAH.KeyDown += UAH_KeyDown;
             _uAH.KeyUp += _uAH_KeyUp;
         }
         private void loadDataNote()
         {
-            _listNameFile = ShowFile(dataPath);
+            _listNameFile = FileDB.Inst.ShowFile(FileDB.Inst.DataPath);
             if (_listNameFile.Length > 0)
             {
                 foreach (string item in _listNameFile)
                 {
-                    string fileName = dataPath + "\\" + item;
-                    string data = readFile(fileName);
+                    string fileName = FileDB.Inst.DataPath + "\\" + item;
+                    string data = FileDB.Inst.readFile(fileName);
                     string[] tmp = data.Split(new string[] { ";\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                    if (tmp.Length == 3)
+                    if (tmp.Length == 4)
                     {
                         string[] tagsArr = tmp[0].Split(',');
                         List<string> listTag = new List<string>();
@@ -139,53 +140,39 @@ namespace _testHOOK
                         {
                             listTag.Add(tag);
                         }
+                        string[] font = tmp[3].Split(',');
+                        Color c = Color.FromArgb(120, Int32.Parse(font[2]), Int32.Parse(font[3]), Int32.Parse(font[4]));
+                        int fontSize = Int32.Parse(font[1]);
+                        bool bold = bool.Parse(font[5]) == true ? true : false;
+                        bool Ital = bool.Parse(font[6]) == true ? true : false;
+                        bool UnderL = bool.Parse(font[7]) == true ? true : false;
 
-                        _listNote.Add(new ANote(item, tmp[1], tmp[2], File.GetCreationTime(fileName), listTag));
+                        FontStyle myfontStyle = FontStyle.Bold | FontStyle.Italic | FontStyle.Underline;
+                        if (bold || Ital || UnderL)
+                        {
+
+                            if (!bold) { myfontStyle = myfontStyle & ~FontStyle.Bold; }
+                            if (!Ital) { myfontStyle = myfontStyle & ~FontStyle.Italic; }
+                            if (!UnderL) { myfontStyle = myfontStyle & ~FontStyle.Underline; }
+                        }
+                        else { myfontStyle = FontStyle.Regular; }
+
+                        Font fnt = new Font(font[0], fontSize, myfontStyle);
+                        _listNote.Add(new ANote(item, tmp[1], tmp[2], File.GetCreationTime(fileName), listTag, c, fnt));
                     }
                 }
             }
+            //
         }
-        string readFile(string fileName)
+        void loadDataCbbFont()
         {
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            foreach (FontFamily item in FontFamily.Families)
             {
-                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
-                {
-                    return reader.ReadToEnd();
-                }
+                cbbFontFamily.Items.Add(item.Name);
             }
-        }
-        void writeFile(string fileName, string text)
-        {
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
-            {
-                using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8))
-                {
-                    writer.Write(text);
-                }
-            }
-        }
-        public string[] ShowFile(string path)
-        {
-            if (Directory.Exists(path))
-            {
-                return ProcessDirectory(path); // nếu file tồn tại
-            }
-            return null;
+
         }
 
-        public string[] ProcessDirectory(string pathfile)
-        {
-            string[] fileList = Directory.GetFiles(pathfile);//lay danh sách file cho vao mảng
-            string[] ListFileName = new string[fileList.Length]; //danh sach tên file trong thư mục
-
-            //duyet mang file trong thư mục
-            for (int i = 0; i < fileList.Length; i++)
-            {
-                ListFileName[i] = Path.GetFileName(fileList[i]).Trim();
-            }
-            return ListFileName;
-        }
         private void showThisForm(bool show)
         {
             if (show)
@@ -206,18 +193,20 @@ namespace _testHOOK
             _ListKeys.Clear();
         }
 
-
         private void UAH_KeyDown(object sender, KeyEventArgs e)
         {
             _ListKeys.Add(e.KeyCode);
             int count = _ListKeys.Count;
             if (count == 2)
             {
-                if (_ListKeys[0] == Keys.LWin)
+                if (_ListKeys[0] == Keys.LControlKey)
                 {
                     if (_ListKeys[1] == Keys.Space)
                     {
-                        MessageBox.Show("");
+                        frmAddNote frmadd = new frmAddNote(_listNote.Count);
+                        this.AddOwnedForm(frmadd);
+                        frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
+                        frmadd.Show();
                     }
                 }
             }
@@ -244,14 +233,12 @@ namespace _testHOOK
             e.Cancel = true;
             showThisForm(false);
         }
-
-
-
         private void treeV_DoubleClick(object sender, EventArgs e)
         {
             panelAdd.Hide();
             pnEdit.Hide();
             TreeNode tr = treeV.SelectedNode;
+            if (tr == null) { return; }
             if (!tr.Name.Equals("rootTags") && tr.Text != "")
             {
 
@@ -320,34 +307,6 @@ namespace _testHOOK
 
         }
 
-
-
-        private void treeV_MouseClick(object sender, MouseEventArgs e)
-        {
-            //TreeViewHitTestInfo hitTest = treeV.HitTest(e.Location);
-            //if (hitTest.Location == TreeViewHitTestLocations.PlusMinus)
-            //{
-            //    lstV.Items.Clear();
-            //    foreach (ANote item in _listNote)
-            //    {
-            //        foreach (var tags in item.Tags)
-            //        {
-            //            if (hitTest.Node.Text.Contains(tags))
-            //            {
-            //                ListViewItem tmp = new ListViewItem() { Text = item.TitleNote };
-            //                tmp.SubItems.Add(item.TextNote);
-            //                tmp.SubItems.Add(item.DayCre.ToString("tt dd/MM/yyyy hh:mm tt"));
-
-            //                lstV.Items.Add(tmp);
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //}
-
-        }
-
         private void lstV_SelectedIndexChanged(object sender, EventArgs e)
         {
             panelAdd.Show();
@@ -369,6 +328,11 @@ namespace _testHOOK
                         {
                             tbAddTag.Text = tbAddTag.Text.Remove(tbAddTag.TextLength - 1, 1);
                         }
+                        cbbFontFamily.Text = tbTextNote.Font.FontFamily.Name;
+                        cbbFontSize.Text = tbTextNote.Font.Size.ToString();
+                        tbTextNote.Font = note.Font;
+                        tbTextNote.ForeColor = note.Color;
+                        btnFont.BackColor = note.Color;
                         return;
                     }
                 }
@@ -376,17 +340,130 @@ namespace _testHOOK
             }
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
         private void btnFont_Click(object sender, EventArgs e)
         {
-          
-            fontDialog1.ShowColor = true;
-            fontDialog1.ShowDialog();
 
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                tbTextNote.ForeColor = colorDialog1.Color;
+                btnFont.BackColor = colorDialog1.Color;
+            }
+        }
+
+        private void btnAddNote_Click(object sender, EventArgs e)
+        {
+            frmAddNote frmadd = new frmAddNote(_listNote.Count);
+            this.AddOwnedForm(frmadd);
+            frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
+            frmadd.Show();
+        }
+        void addSuccess(bool b)
+        {
+           if(b)
+            {
+                btnRefresh_Click(new object(), new EventArgs());
+            }
+        }
+
+        private void Frmadd_AddNote(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void cbbFontSize_Validated(object sender, EventArgs e)
+        {
+            uint fontSize = 8;
+            if (!uint.TryParse(cbbFontSize.Text, out fontSize))
+            {
+
+                MessageBox.Show("This is not a valid number !");
+                cbbFontSize.Text = tbTextNote.Font.Size.ToString();
+
+            }
+            else if (fontSize > 73 || fontSize < 8)
+            {
+                MessageBox.Show("Size from 8 to 72 !");
+                cbbFontSize.Text = tbTextNote.Font.Size.ToString();
+            }
+            else
+            {
+                tbTextNote.Font = new Font(tbTextNote.Font.FontFamily, Int32.Parse(cbbFontSize.Text), tbTextNote.Font.Style);
+            }
+        }
+
+        private void cbbFontFamily_Validated(object sender, EventArgs e)
+        {
+            if (!cbbFontFamily.Items.Contains(cbbFontFamily.Text))
+            {
+                MessageBox.Show("There is no font with that name !");
+                cbbFontFamily.Text = tbTextNote.Font.FontFamily.Name;
+            }
+            else
+            {
+                tbTextNote.Font = new Font(cbbFontFamily.Text, tbTextNote.Font.Size, tbTextNote.Font.Style);
+            }
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            bool bold = tbTextNote.Font.Bold;
+            FontStyle ft = tbTextNote.Font.Style;
+            if (bold)
+            {
+                ft = ft & ~FontStyle.Bold;
+            }
+            else
+            {
+                ft = ft | FontStyle.Bold;
+            }
+            tbTextNote.Font = new Font(tbTextNote.Font, ft);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            bool bold = tbTextNote.Font.Italic;
+            FontStyle ft = tbTextNote.Font.Style;
+            if (bold)
+            {
+                ft = ft & ~FontStyle.Italic;
+            }
+            else
+            {
+                ft = ft | FontStyle.Italic;
+            }
+            tbTextNote.Font = new Font(tbTextNote.Font, ft);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            bool bold = tbTextNote.Font.Underline;
+            FontStyle ft = tbTextNote.Font.Style;
+            if (bold)
+            {
+                ft = ft & ~FontStyle.Underline;
+            }
+            else
+            {
+                ft = ft | FontStyle.Underline;
+            }
+            tbTextNote.Font = new Font(tbTextNote.Font, ft);
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            treeV.Nodes.Clear();
+            treeV.Refresh();
+
+            _listNote.Clear();
+            _listNameFile = null;
+            _listTag.Clear();
+            loadDataTreeView();
         }
     }
 }

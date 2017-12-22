@@ -8,3 +8,14 @@ C:\Users\Cuong Phi\Desktop\QuickNote\_testHOOK\obj\Debug\QuickNote--.csproj.Gene
 C:\Users\Cuong Phi\Desktop\QuickNote\_testHOOK\obj\Debug\QuickNote--.csproj.CoreCompileInputs.cache
 C:\Users\Cuong Phi\Desktop\QuickNote\_testHOOK\obj\Debug\_testHOOK.exe
 C:\Users\Cuong Phi\Desktop\QuickNote\_testHOOK\obj\Debug\_testHOOK.pdb
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\bin\Debug\_testHOOK.exe.config
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\bin\Debug\_testHOOK.exe
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\bin\Debug\_testHOOK.pdb
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\QuickNote--.csprojResolveAssemblyReference.cache
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\_testHOOK.Properties.Resources.resources
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\QuickNote--.csproj.GenerateResource.Cache
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\QuickNote--.csproj.CoreCompileInputs.cache
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\_testHOOK.exe
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\_testHOOK.pdb
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\QuickNote.frmAddNote.resources
+C:\Users\Cuong Phi\Desktop\QuickNote--\QuickNote\_testHOOK\obj\Debug\QuickNote.frmMain.resources

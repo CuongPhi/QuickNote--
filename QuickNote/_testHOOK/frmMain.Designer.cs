@@ -1,6 +1,6 @@
-﻿namespace _testHOOK
+﻿namespace QuickNote
 {
-    partial class Form1
+    partial class frmMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,42 +29,49 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.pnEdit = new System.Windows.Forms.Panel();
+            this.cbbFontSize = new System.Windows.Forms.ComboBox();
+            this.cbbFontFamily = new System.Windows.Forms.ComboBox();
+            this.btnUnderL = new System.Windows.Forms.Button();
+            this.btnIta = new System.Windows.Forms.Button();
+            this.btnBold = new System.Windows.Forms.Button();
+            this.btnFont = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.treeV = new System.Windows.Forms.TreeView();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.panelAdd = new System.Windows.Forms.Panel();
+            this.tbTextNote = new System.Windows.Forms.RichTextBox();
             this.tbAddTag = new System.Windows.Forms.TextBox();
             this.tbTag = new System.Windows.Forms.TextBox();
             this.tbTitle = new System.Windows.Forms.TextBox();
             this.tbAddTitle = new System.Windows.Forms.TextBox();
-            this.tbTextNote = new System.Windows.Forms.TextBox();
             this.lstV = new System.Windows.Forms.ListView();
             this.col2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.treeV = new System.Windows.Forms.TreeView();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btnFont = new System.Windows.Forms.Button();
-            this.pnEdit = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.btnAddNote = new System.Windows.Forms.Button();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.panelAdd.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.pnEdit.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panelAdd.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -111,13 +118,21 @@
             this.menuStrip1.Size = new System.Drawing.Size(1006, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
-            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem1});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(36, 20);
             this.fileToolStripMenuItem.Text = "File";
+            // 
+            // exitToolStripMenuItem1
+            // 
+            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem1.Text = "Hide";
+            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -144,17 +159,164 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             // 
+            // pnEdit
+            // 
+            this.pnEdit.Controls.Add(this.cbbFontSize);
+            this.pnEdit.Controls.Add(this.cbbFontFamily);
+            this.pnEdit.Controls.Add(this.btnUnderL);
+            this.pnEdit.Controls.Add(this.btnIta);
+            this.pnEdit.Controls.Add(this.btnBold);
+            this.pnEdit.Controls.Add(this.btnFont);
+            this.pnEdit.Location = new System.Drawing.Point(270, 160);
+            this.pnEdit.Name = "pnEdit";
+            this.pnEdit.Size = new System.Drawing.Size(709, 30);
+            this.pnEdit.TabIndex = 17;
+            // 
+            // cbbFontSize
+            // 
+            this.cbbFontSize.FormattingEnabled = true;
+            this.cbbFontSize.Items.AddRange(new object[] {
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "14",
+            "16",
+            "18",
+            "20",
+            "22",
+            "24",
+            "26",
+            "28",
+            "36",
+            "48",
+            "72"});
+            this.cbbFontSize.Location = new System.Drawing.Point(200, 6);
+            this.cbbFontSize.Name = "cbbFontSize";
+            this.cbbFontSize.Size = new System.Drawing.Size(42, 21);
+            this.cbbFontSize.TabIndex = 22;
+            this.cbbFontSize.Validated += new System.EventHandler(this.cbbFontSize_Validated);
+            // 
+            // cbbFontFamily
+            // 
+            this.cbbFontFamily.FormattingEnabled = true;
+            this.cbbFontFamily.Location = new System.Drawing.Point(101, 6);
+            this.cbbFontFamily.Name = "cbbFontFamily";
+            this.cbbFontFamily.Size = new System.Drawing.Size(93, 21);
+            this.cbbFontFamily.TabIndex = 21;
+            this.cbbFontFamily.Validated += new System.EventHandler(this.cbbFontFamily_Validated);
+            // 
+            // btnUnderL
+            // 
+            this.btnUnderL.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUnderL.BackgroundImage")));
+            this.btnUnderL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnUnderL.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnUnderL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUnderL.Location = new System.Drawing.Point(360, 10);
+            this.btnUnderL.Name = "btnUnderL";
+            this.btnUnderL.Size = new System.Drawing.Size(15, 15);
+            this.btnUnderL.TabIndex = 20;
+            this.btnUnderL.UseVisualStyleBackColor = true;
+            this.btnUnderL.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // btnIta
+            // 
+            this.btnIta.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnIta.BackgroundImage")));
+            this.btnIta.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnIta.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnIta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnIta.Location = new System.Drawing.Point(325, 10);
+            this.btnIta.Name = "btnIta";
+            this.btnIta.Size = new System.Drawing.Size(15, 15);
+            this.btnIta.TabIndex = 19;
+            this.btnIta.UseVisualStyleBackColor = true;
+            this.btnIta.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnBold
+            // 
+            this.btnBold.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBold.BackgroundImage")));
+            this.btnBold.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnBold.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnBold.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBold.Location = new System.Drawing.Point(294, 10);
+            this.btnBold.Name = "btnBold";
+            this.btnBold.Size = new System.Drawing.Size(15, 15);
+            this.btnBold.TabIndex = 18;
+            this.btnBold.UseVisualStyleBackColor = true;
+            this.btnBold.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // btnFont
+            // 
+            this.btnFont.BackColor = System.Drawing.SystemColors.Control;
+            this.btnFont.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFont.BackgroundImage")));
+            this.btnFont.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnFont.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnFont.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFont.Location = new System.Drawing.Point(257, 7);
+            this.btnFont.Name = "btnFont";
+            this.btnFont.Size = new System.Drawing.Size(20, 20);
+            this.btnFont.TabIndex = 17;
+            this.btnFont.UseVisualStyleBackColor = false;
+            this.btnFont.Click += new System.EventHandler(this.btnFont_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.panel1.Controls.Add(this.treeV);
+            this.panel1.Location = new System.Drawing.Point(0, 14);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(264, 484);
+            this.panel1.TabIndex = 16;
+            // 
+            // treeV
+            // 
+            this.treeV.BackColor = System.Drawing.SystemColors.Control;
+            this.treeV.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.treeV.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.treeV.HideSelection = false;
+            this.treeV.HotTracking = true;
+            this.treeV.ImageIndex = 0;
+            this.treeV.ImageList = this.imageList1;
+            this.treeV.Indent = 20;
+            this.treeV.ItemHeight = 20;
+            this.treeV.Location = new System.Drawing.Point(3, 6);
+            this.treeV.Name = "treeV";
+            this.treeV.SelectedImageIndex = 0;
+            this.treeV.ShowLines = false;
+            this.treeV.ShowNodeToolTips = true;
+            this.treeV.Size = new System.Drawing.Size(257, 475);
+            this.treeV.TabIndex = 8;
+            this.treeV.DoubleClick += new System.EventHandler(this.treeV_DoubleClick);
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "tag-2.png");
+            this.imageList1.Images.SetKeyName(1, "icons8-bill-50.png");
+            // 
             // panelAdd
             // 
+            this.panelAdd.Controls.Add(this.tbTextNote);
             this.panelAdd.Controls.Add(this.tbAddTag);
             this.panelAdd.Controls.Add(this.tbTag);
             this.panelAdd.Controls.Add(this.tbTitle);
             this.panelAdd.Controls.Add(this.tbAddTitle);
-            this.panelAdd.Controls.Add(this.tbTextNote);
             this.panelAdd.Location = new System.Drawing.Point(263, 192);
             this.panelAdd.Name = "panelAdd";
             this.panelAdd.Size = new System.Drawing.Size(733, 302);
             this.panelAdd.TabIndex = 15;
+            // 
+            // tbTextNote
+            // 
+            this.tbTextNote.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tbTextNote.Font = new System.Drawing.Font("Candara", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.tbTextNote.Location = new System.Drawing.Point(7, 26);
+            this.tbTextNote.Name = "tbTextNote";
+            this.tbTextNote.Size = new System.Drawing.Size(726, 271);
+            this.tbTextNote.TabIndex = 20;
+            this.tbTextNote.Text = "";
             // 
             // tbAddTag
             // 
@@ -193,15 +355,6 @@
             this.tbAddTitle.Name = "tbAddTitle";
             this.tbAddTitle.Size = new System.Drawing.Size(379, 26);
             this.tbAddTitle.TabIndex = 16;
-            // 
-            // tbTextNote
-            // 
-            this.tbTextNote.Font = new System.Drawing.Font("Cambria", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.tbTextNote.Location = new System.Drawing.Point(7, 26);
-            this.tbTextNote.Multiline = true;
-            this.tbTextNote.Name = "tbTextNote";
-            this.tbTextNote.Size = new System.Drawing.Size(724, 276);
-            this.tbTextNote.TabIndex = 15;
             // 
             // lstV
             // 
@@ -243,108 +396,48 @@
             this.col4.Text = "Tags";
             this.col4.Width = 150;
             // 
-            // treeV
+            // panel2
             // 
-            this.treeV.BackColor = System.Drawing.SystemColors.Control;
-            this.treeV.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.treeV.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.treeV.HideSelection = false;
-            this.treeV.HotTracking = true;
-            this.treeV.ImageIndex = 0;
-            this.treeV.ImageList = this.imageList1;
-            this.treeV.Indent = 20;
-            this.treeV.ItemHeight = 20;
-            this.treeV.Location = new System.Drawing.Point(3, 6);
-            this.treeV.Name = "treeV";
-            this.treeV.SelectedImageIndex = 0;
-            this.treeV.ShowLines = false;
-            this.treeV.ShowNodeToolTips = true;
-            this.treeV.Size = new System.Drawing.Size(257, 475);
-            this.treeV.TabIndex = 8;
-            this.treeV.DoubleClick += new System.EventHandler(this.treeV_DoubleClick);
-            this.treeV.MouseClick += new System.Windows.Forms.MouseEventHandler(this.treeV_MouseClick);
+            this.panel2.Controls.Add(this.btnRefresh);
+            this.panel2.Controls.Add(this.btnAddNote);
+            this.panel2.Location = new System.Drawing.Point(3, 27);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(993, 32);
+            this.panel2.TabIndex = 9;
             // 
-            // imageList1
+            // btnAddNote
             // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "tag-2.png");
-            this.imageList1.Images.SetKeyName(1, "icons8-bill-50.png");
+            this.btnAddNote.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNote.Image")));
+            this.btnAddNote.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.btnAddNote.Location = new System.Drawing.Point(267, 0);
+            this.btnAddNote.Name = "btnAddNote";
+            this.btnAddNote.Size = new System.Drawing.Size(115, 30);
+            this.btnAddNote.TabIndex = 0;
+            this.btnAddNote.Text = "New Note";
+            this.btnAddNote.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAddNote.UseVisualStyleBackColor = true;
+            this.btnAddNote.Click += new System.EventHandler(this.btnAddNote_Click);
             // 
-            // panel1
+            // colorDialog1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.panel1.Controls.Add(this.treeV);
-            this.panel1.Location = new System.Drawing.Point(0, 14);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(264, 484);
-            this.panel1.TabIndex = 16;
+            this.colorDialog1.ShowHelp = true;
             // 
-            // btnFont
+            // btnRefresh
             // 
-            this.btnFont.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFont.BackgroundImage")));
-            this.btnFont.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnFont.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnFont.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFont.Location = new System.Drawing.Point(132, 10);
-            this.btnFont.Name = "btnFont";
-            this.btnFont.Size = new System.Drawing.Size(18, 17);
-            this.btnFont.TabIndex = 17;
-            this.btnFont.UseVisualStyleBackColor = true;
-            this.btnFont.Click += new System.EventHandler(this.btnFont_Click);
+            this.btnRefresh.Location = new System.Drawing.Point(63, 6);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.TabIndex = 10;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // pnEdit
-            // 
-            this.pnEdit.Controls.Add(this.button3);
-            this.pnEdit.Controls.Add(this.button2);
-            this.pnEdit.Controls.Add(this.button1);
-            this.pnEdit.Controls.Add(this.btnFont);
-            this.pnEdit.Location = new System.Drawing.Point(270, 160);
-            this.pnEdit.Name = "pnEdit";
-            this.pnEdit.Size = new System.Drawing.Size(709, 30);
-            this.pnEdit.TabIndex = 17;
-            // 
-            // button1
-            // 
-            this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(169, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(15, 15);
-            this.button1.TabIndex = 18;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button2.BackgroundImage")));
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(200, 10);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(15, 15);
-            this.button2.TabIndex = 19;
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button3.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.Location = new System.Drawing.Point(234, 11);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(15, 15);
-            this.button3.TabIndex = 20;
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // Form1
+            // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1006, 552);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
@@ -352,7 +445,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "QuickNote--";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
@@ -361,10 +454,11 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
+            this.pnEdit.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.panelAdd.ResumeLayout(false);
             this.panelAdd.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.pnEdit.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,7 +470,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
-        private System.Windows.Forms.FontDialog fontDialog1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -391,16 +484,23 @@
         private System.Windows.Forms.TextBox tbTag;
         private System.Windows.Forms.TextBox tbTitle;
         private System.Windows.Forms.TextBox tbAddTitle;
-        private System.Windows.Forms.TextBox tbTextNote;
         private System.Windows.Forms.ColumnHeader col1;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.ColumnHeader col4;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnFont;
         private System.Windows.Forms.Panel pnEdit;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnUnderL;
+        private System.Windows.Forms.Button btnIta;
+        private System.Windows.Forms.Button btnBold;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button btnAddNote;
+        private System.Windows.Forms.ComboBox cbbFontSize;
+        private System.Windows.Forms.ComboBox cbbFontFamily;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.RichTextBox tbTextNote;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
 

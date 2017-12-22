@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace _testHOOK.Properties
+namespace QuickNote.Properties
 {
 
 
