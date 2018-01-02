@@ -12,7 +12,8 @@ namespace QuickNote
     /// </summary>
     public class FileDB
     {
-        private string dataPath = Application.StartupPath + @"\DataNote\CurrNote";
+        private string notePath = Application.StartupPath + @"\Data\CurrNote";
+        private string iconPath = Application.StartupPath + @"\Data\Icon";
         /// <summary>
         /// Singleton design pattern
         /// make sure that only one instance
@@ -29,7 +30,8 @@ namespace QuickNote
             }
         }
 
-        public string DataPath { get => dataPath; set => dataPath = value; }
+        public string NotePath { get => notePath; set => notePath = value; }
+        public string IconPath { get => iconPath; set => iconPath = value; }
 
         public string readFile(string fileName)
         {
@@ -50,6 +52,44 @@ namespace QuickNote
                 {
                     writer.Write(text);
                 }
+            }
+        }
+        public void writeANote(int nfileName, ANote note)
+        {
+            string dataNote="";
+            string stringSplit = ";\r\n";
+            foreach (string item in note.Tags)
+            {
+                dataNote += (item+", ");
+            }
+            if(dataNote=="")
+            {
+                return;
+            }
+            dataNote= dataNote.Remove(dataNote.Length - 1, 1);
+            dataNote += stringSplit;
+
+            dataNote += note.TitleNote;
+            dataNote += stringSplit;
+
+            dataNote += note.TextNote;
+            dataNote += stringSplit;
+
+            dataNote += (note.Font.Name + "," + note.Font.Size + "," + note.Color.R.ToString() + "," + note.Color.G.ToString() + "," + note.Color.B.ToString()+",");
+            dataNote += (note.Font.Bold.ToString() + "," + note.Font.Italic.ToString() + "," + note.Font.Underline.ToString());
+            string fileName = NotePath + "\\"+ nfileName.ToString();
+            try
+            {
+                while (File.Exists(fileName))
+                {
+                    fileName = NotePath + "\\" + (nfileName++).ToString();
+                    
+                }
+                writeFile(fileName, dataNote);                
+            }
+            catch
+            {
+                
             }
         }
         public string[] ShowFile(string path)
@@ -73,5 +113,6 @@ namespace QuickNote
             }
             return ListFileName;
         }
+       
     }
 }

@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TagNote.cs" />
     <Compile Include="UserActivityHook.cs" />
     <EmbeddedResource Include="frmAddNote.resx">
       <DependentUpon>frmAddNote.cs</DependentUpon>
@@ -93,10 +94,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataNote\BinNote\" />
-    <Folder Include="DataNote\CurrNote\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="10 %282%29.ico" />
   </ItemGroup>

@@ -32,8 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,12 +42,15 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pnEdit = new System.Windows.Forms.Panel();
+            this.btnEdit = new System.Windows.Forms.Button();
+            this.pnColor = new System.Windows.Forms.Panel();
+            this.btnFont = new System.Windows.Forms.Button();
+            this.btnColor = new System.Windows.Forms.Button();
             this.cbbFontSize = new System.Windows.Forms.ComboBox();
             this.cbbFontFamily = new System.Windows.Forms.ComboBox();
             this.btnUnderL = new System.Windows.Forms.Button();
             this.btnIta = new System.Windows.Forms.Button();
             this.btnBold = new System.Windows.Forms.Button();
-            this.btnFont = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.treeV = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
@@ -62,16 +66,22 @@
             this.col1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.col4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.btnAddNote = new System.Windows.Forms.Button();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.btnRefresh = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.rdbtnCrlSpace = new System.Windows.Forms.RadioButton();
+            this.btnInsertPic = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.pnEdit.SuspendLayout();
+            this.pnColor.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelAdd.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -81,30 +91,38 @@
             this.notifyIcon1.BalloonTipTitle = "asda";
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Text = "Double click to chang status Main Window";
             this.notifyIcon1.Visible = true;
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitToolStripMenuItem,
-            this.showToolStripMenuItem});
+            this.showToolStripMenuItem,
+            this.statitToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 70);
             // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.showToolStripMenuItem.Text = "Show window";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // statitToolStripMenuItem
+            // 
+            this.statitToolStripMenuItem.Name = "statitToolStripMenuItem";
+            this.statitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.statitToolStripMenuItem.Text = "Statistics";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
@@ -161,16 +179,68 @@
             // 
             // pnEdit
             // 
+            this.pnEdit.Controls.Add(this.btnInsertPic);
+            this.pnEdit.Controls.Add(this.btnEdit);
+            this.pnEdit.Controls.Add(this.pnColor);
             this.pnEdit.Controls.Add(this.cbbFontSize);
             this.pnEdit.Controls.Add(this.cbbFontFamily);
             this.pnEdit.Controls.Add(this.btnUnderL);
             this.pnEdit.Controls.Add(this.btnIta);
             this.pnEdit.Controls.Add(this.btnBold);
-            this.pnEdit.Controls.Add(this.btnFont);
             this.pnEdit.Location = new System.Drawing.Point(270, 160);
             this.pnEdit.Name = "pnEdit";
-            this.pnEdit.Size = new System.Drawing.Size(709, 30);
+            this.pnEdit.Size = new System.Drawing.Size(724, 30);
             this.pnEdit.TabIndex = 17;
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Location = new System.Drawing.Point(677, 4);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(43, 23);
+            this.btnEdit.TabIndex = 25;
+            this.btnEdit.Text = "Save";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // pnColor
+            // 
+            this.pnColor.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnColor.Controls.Add(this.btnFont);
+            this.pnColor.Controls.Add(this.btnColor);
+            this.pnColor.Location = new System.Drawing.Point(251, 7);
+            this.pnColor.Name = "pnColor";
+            this.pnColor.Size = new System.Drawing.Size(25, 20);
+            this.pnColor.TabIndex = 24;
+            this.pnColor.Click += new System.EventHandler(this.pnColor_Click);
+            this.pnColor.MouseLeave += new System.EventHandler(this.pnColor_MouseLeave);
+            this.pnColor.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pnColor_MouseMove);
+            // 
+            // btnFont
+            // 
+            this.btnFont.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.btnFont.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFont.BackgroundImage")));
+            this.btnFont.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnFont.Enabled = false;
+            this.btnFont.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnFont.FlatAppearance.BorderSize = 0;
+            this.btnFont.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnFont.Location = new System.Drawing.Point(5, 2);
+            this.btnFont.Name = "btnFont";
+            this.btnFont.Size = new System.Drawing.Size(15, 12);
+            this.btnFont.TabIndex = 17;
+            this.btnFont.UseVisualStyleBackColor = false;
+            // 
+            // btnColor
+            // 
+            this.btnColor.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnColor.Enabled = false;
+            this.btnColor.FlatAppearance.BorderSize = 0;
+            this.btnColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnColor.Location = new System.Drawing.Point(2, 14);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(21, 5);
+            this.btnColor.TabIndex = 23;
+            this.btnColor.UseVisualStyleBackColor = false;
             // 
             // cbbFontSize
             // 
@@ -192,7 +262,7 @@
             "36",
             "48",
             "72"});
-            this.cbbFontSize.Location = new System.Drawing.Point(200, 6);
+            this.cbbFontSize.Location = new System.Drawing.Point(183, 6);
             this.cbbFontSize.Name = "cbbFontSize";
             this.cbbFontSize.Size = new System.Drawing.Size(42, 21);
             this.cbbFontSize.TabIndex = 22;
@@ -201,7 +271,7 @@
             // cbbFontFamily
             // 
             this.cbbFontFamily.FormattingEnabled = true;
-            this.cbbFontFamily.Location = new System.Drawing.Point(101, 6);
+            this.cbbFontFamily.Location = new System.Drawing.Point(84, 6);
             this.cbbFontFamily.Name = "cbbFontFamily";
             this.cbbFontFamily.Size = new System.Drawing.Size(93, 21);
             this.cbbFontFamily.TabIndex = 21;
@@ -215,7 +285,7 @@
             this.btnUnderL.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUnderL.Location = new System.Drawing.Point(360, 10);
             this.btnUnderL.Name = "btnUnderL";
-            this.btnUnderL.Size = new System.Drawing.Size(15, 15);
+            this.btnUnderL.Size = new System.Drawing.Size(15, 16);
             this.btnUnderL.TabIndex = 20;
             this.btnUnderL.UseVisualStyleBackColor = true;
             this.btnUnderL.Click += new System.EventHandler(this.button3_Click);
@@ -245,20 +315,6 @@
             this.btnBold.TabIndex = 18;
             this.btnBold.UseVisualStyleBackColor = true;
             this.btnBold.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // btnFont
-            // 
-            this.btnFont.BackColor = System.Drawing.SystemColors.Control;
-            this.btnFont.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFont.BackgroundImage")));
-            this.btnFont.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnFont.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnFont.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnFont.Location = new System.Drawing.Point(257, 7);
-            this.btnFont.Name = "btnFont";
-            this.btnFont.Size = new System.Drawing.Size(20, 20);
-            this.btnFont.TabIndex = 17;
-            this.btnFont.UseVisualStyleBackColor = false;
-            this.btnFont.Click += new System.EventHandler(this.btnFont_Click);
             // 
             // panel1
             // 
@@ -399,17 +455,26 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.btnRefresh);
-            this.panel2.Controls.Add(this.btnAddNote);
             this.panel2.Location = new System.Drawing.Point(3, 27);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(993, 32);
             this.panel2.TabIndex = 9;
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(63, 6);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.TabIndex = 10;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // btnAddNote
             // 
             this.btnAddNote.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNote.Image")));
             this.btnAddNote.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btnAddNote.Location = new System.Drawing.Point(267, 0);
+            this.btnAddNote.Location = new System.Drawing.Point(0, 1);
             this.btnAddNote.Name = "btnAddNote";
             this.btnAddNote.Size = new System.Drawing.Size(115, 30);
             this.btnAddNote.TabIndex = 0;
@@ -422,21 +487,58 @@
             // 
             this.colorDialog1.ShowHelp = true;
             // 
-            // btnRefresh
+            // panel3
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(63, 6);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
-            this.btnRefresh.TabIndex = 10;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.radioButton1);
+            this.panel3.Controls.Add(this.rdbtnCrlSpace);
+            this.panel3.Controls.Add(this.btnAddNote);
+            this.panel3.Location = new System.Drawing.Point(263, 27);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(316, 32);
+            this.panel3.TabIndex = 12;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(240, 8);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(66, 17);
+            this.radioButton1.TabIndex = 13;
+            this.radioButton1.Text = "WIN + Z";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // rdbtnCrlSpace
+            // 
+            this.rdbtnCrlSpace.AutoSize = true;
+            this.rdbtnCrlSpace.Checked = true;
+            this.rdbtnCrlSpace.Location = new System.Drawing.Point(121, 8);
+            this.rdbtnCrlSpace.Name = "rdbtnCrlSpace";
+            this.rdbtnCrlSpace.Size = new System.Drawing.Size(96, 17);
+            this.rdbtnCrlSpace.TabIndex = 12;
+            this.rdbtnCrlSpace.TabStop = true;
+            this.rdbtnCrlSpace.Text = "CTRL + SPACE";
+            this.rdbtnCrlSpace.UseVisualStyleBackColor = true;
+            this.rdbtnCrlSpace.CheckedChanged += new System.EventHandler(this.rdbtnCrlSpace_CheckedChanged);
+            // 
+            // btnInsertPic
+            // 
+            this.btnInsertPic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsertPic.BackgroundImage")));
+            this.btnInsertPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnInsertPic.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnInsertPic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInsertPic.Location = new System.Drawing.Point(398, 7);
+            this.btnInsertPic.Name = "btnInsertPic";
+            this.btnInsertPic.Size = new System.Drawing.Size(22, 22);
+            this.btnInsertPic.TabIndex = 32;
+            this.btnInsertPic.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1006, 552);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
@@ -455,10 +557,13 @@
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.pnEdit.ResumeLayout(false);
+            this.pnColor.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panelAdd.ResumeLayout(false);
             this.panelAdd.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -466,7 +571,7 @@
 
         #endregion
 
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.NotifyIcon notifyIcon1 = new System.Windows.Forms.NotifyIcon();
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
@@ -501,6 +606,14 @@
         private System.Windows.Forms.RichTextBox tbTextNote;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
         private System.Windows.Forms.Button btnRefresh;
+        private System.Windows.Forms.Button btnColor;
+        private System.Windows.Forms.Panel pnColor;
+        private System.Windows.Forms.Button btnEdit;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.RadioButton rdbtnCrlSpace;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.ToolStripMenuItem statitToolStripMenuItem;
+        private System.Windows.Forms.Button btnInsertPic;
     }
 }
 

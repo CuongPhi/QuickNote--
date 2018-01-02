@@ -26,7 +26,22 @@ namespace QuickNote
             this.Font = font;
             this.color = cl;
         }
- 
+        public ANote(string id, string title, string text, string tags, Color cl, Font font , string fam, string size)
+        {
+            this.DayCre = dayCre;
+            this.IdNote = id;
+            this.TitleNote = title;
+            this.TextNote = text;
+            this.Font =  new Font(fam, font.Size, font.Style);
+            this.color = cl;
+            this.Tags = new List<string>();
+            string []tag= tags.Split(',');
+            foreach (string item in tag)
+            {
+                this.Tags.Add(item); 
+            }
+        }
+
         public string TitleNote { get => titleNote; set => titleNote = value; }
         public string TextNote { get => textNote; set => textNote = value; }
         public DateTime DayCre { get => dayCre; set => dayCre = value; }

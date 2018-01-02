@@ -1,40 +1,68 @@
-﻿using System;
+﻿using _testHOOK;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QuickNote
 {
     public partial class frmAddNote : Form
     {
-
         private FontFamily[] Families { get; }
         private bool addSuccess = false;
-
         private int _sumNote = 0;
+        /// <summary>
+        /// set numbers of suggested tags in new note 
+        /// </summary>
+        private int _suggTag=0;
+        private List<TagNote> _listTag = new List<TagNote>();
+        /// <summary>
+        /// delegate addnote successfull
+        /// </summary>
+        /// <param name="b"></param>
         public delegate void AddNoteHandler(bool b);
         public AddNoteHandler AddNote;
-        
-        public frmAddNote(int noteSum)
+        /// <summary>
+        /// this form contructor
+        /// </summary>
+        /// <param name="noteSum"></param>
+        /// <param name="suggestTag"></param>
+        public frmAddNote(int noteSum,int suggTag, List<TagNote> listTag)
         {
 
             InitializeComponent();
             _sumNote = noteSum;
+            _listTag = new List<TagNote>(listTag);
+            _suggTag = suggTag;
         }
 
         private void frmAddNote_Load(object sender, EventArgs e)
         {
+            this.ptb.Hide();
+            this.ptb.Enabled = false;
             foreach (FontFamily item in FontFamily.Families)
             {
                 cbbFontFamily.Items.Add(item.Name);
             }
             cbbFontSize.Text = tbTextNote.Font.Size.ToString();
             cbbFontFamily.Text = tbTextNote.Font.FontFamily.Name;
+
+            // set text (suggest tags) for tbAddTag
+            if (_listTag.Count < 1)
+            {
+                return;
+            }
+            _listTag.Sort((x, y) => y.NAppFre.CompareTo(x.NAppFre));
+
+            for (int i = 0; i < _listTag.Count && i < _suggTag; i++)
+            {
+                tbAddTag.Text += _listTag[i].Tag + ", ";
+            }
+            if (tbAddTag.Text.Length < 2)
+            {
+                return;
+            }
+            tbAddTag.Text = tbAddTag.Text.Remove(tbAddTag.Text.Length - 2);
 
         }
 
@@ -119,8 +147,13 @@ namespace QuickNote
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string data = "";
-            string stringSplit = ";\r\n";
+            string tags = "";
+            string title = "";
+            string textNote = "";
+            Color cl = tbTextNote.ForeColor;
+            Font fnt = tbTextNote.Font;
+            string fntFam = "";
+            string fntSize = "";
             if (tbTextNote.Text.Length < 2)
             {
                 MessageBox.Show("Text very short !");
@@ -133,19 +166,19 @@ namespace QuickNote
                 {
                     if (tbAddTag.Text == "")
                     {
-                        data += ("None" + stringSplit);
+                        tags = "None";
                     }
                     else
                     {
-                        data += (tbAddTag.Text + stringSplit);
+                        tags = tbAddTag.Text;
                     }
                     if (tbAddTitle.Text == "")
                     {
-                        data += ("None" + stringSplit);
+                        title = "None";
                     }
                     else
                     {
-                        data += (tbAddTitle.Text + stringSplit);
+                        title = tbAddTitle.Text;
                     }
 
                 }
@@ -156,21 +189,18 @@ namespace QuickNote
             }
             else
             {
-                data += (tbAddTag.Text + stringSplit);
-                data += (tbAddTitle.Text + stringSplit);
+                tags = tbAddTag.Text;
+                title = tbAddTitle.Text;
             }
-            data += (tbTextNote.Text + stringSplit);
-            data += (cbbFontFamily.Text + "," + cbbFontSize.Text + ",");
+            textNote = tbTextNote.Text;
 
-            Color c = tbTextNote.ForeColor;
-            data += (c.R.ToString() + "," + c.G.ToString() + "," + c.B.ToString() + ",");
+            fntFam = cbbFontFamily.Text;
+            fntSize = cbbFontSize.Text;
 
-            Font fnt = tbTextNote.Font;
-            data += (fnt.Bold.ToString() + "," + fnt.Italic.ToString() + "," + fnt.Underline.ToString());
 
-            string fileName = FileDB.Inst.DataPath + "\\" + _sumNote;
-            FileDB.Inst.writeFile(fileName, data);
+            ANote note = new ANote(_sumNote.ToString(), title, textNote, tags, cl, fnt, fntFam, fntSize);
 
+            FileDB.Inst.writeANote(_sumNote, note);
 
             addSuccess = true;
             this.Close();
@@ -178,12 +208,7 @@ namespace QuickNote
 
         private void btnFont_Click(object sender, EventArgs e)
         {
-            ColorDialog clDl = new ColorDialog();
-            if (clDl.ShowDialog() == DialogResult.OK)
-            {
-                tbTextNote.ForeColor = clDl.Color;
-                btnFont.BackColor = clDl.Color;
-            }
+
         }
 
         private void frmAddNote_FormClosed(object sender, FormClosedEventArgs e)
@@ -194,5 +219,76 @@ namespace QuickNote
             }
 
         }
+
+        private void pnColor_Click_1(object sender, EventArgs e)
+        {
+            ColorDialog clDl = new ColorDialog();
+            if (clDl.ShowDialog() == DialogResult.OK)
+            {
+                tbTextNote.ForeColor = clDl.Color;
+                btnColor.BackColor = clDl.Color;
+            }
+        }
+
+        private void pnColor_MouseMove(object sender, MouseEventArgs e)
+        {
+            pnColor.BackColor = Color.Silver;
+            btnFont.BackColor = Color.Silver;
+
+        }
+
+        private void pnColor_MouseLeave(object sender, EventArgs e)
+        {
+            pnColor.BackColor = Color.White;
+            btnFont.BackColor = Color.White;
+
+        }
+
+        private void tbAddTag_TextChanged(object sender, EventArgs e)
+        {
+               tbAddTag.ForeColor = Color.Black;
+               tt.SetToolTip(tbAddTag, "Types the multiple tags, seperated by commas and space, ex: (“Note, Tags, Title”)");
+         
+        }
+
+        private void tbAddTag_KeyDown(object sender, KeyEventArgs e)
+        {
+     
+            //if (tbAddTag.Text == _listTag.)
+            //{
+            //    if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
+            //    {
+            //        tbAddTag.Text = "";
+            //    }
+            //}
+        }
+
+        private void tbAddTag_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Oemcomma)
+                {
+                    tbAddTag.Text += " ";
+                    tbAddTag.SelectionStart = tbAddTag.Text.Length;
+
+                }
+            }
+            catch { }
+        }
+
+        private void btnInsertPic_Click(object sender, EventArgs e)
+        {
+            ptb.Enabled = !ptb.Enabled;
+            if (ptb.Enabled)
+            {
+                ptb.Show();
+            }
+            else
+            {
+                ptb.Hide();
+            }
+        }
     }
+
 }

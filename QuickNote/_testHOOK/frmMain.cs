@@ -1,4 +1,5 @@
-﻿using gma.System.Windows;
+﻿using _testHOOK;
+using gma.System.Windows;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,11 +16,14 @@ namespace QuickNote
 {
     public partial class frmMain : Form
     {
+        private Keys _key0 = Keys.LControlKey;
+        private Keys _key1 = Keys.Space;
+
         private List<Keys> _ListKeys = new List<Keys>();
         private List<ANote> _listNote = new List<ANote>();
         string[] _listNameFile = null;
-
-        private List<string> _listTag = new List<string>();
+        private bool _showMainWindow = false;
+        private List<TagNote> _listTag = new List<TagNote>();
 
         public FontFamily[] Families { get; }
         /// <summary>
@@ -33,13 +37,14 @@ namespace QuickNote
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.Icon = new Icon(FileDB.Inst.IconPath + "\\frmMainIcon.ico");
             panelAdd.Hide();
             pnEdit.Hide();
             loadDataCbbFont();
             initsHookKey();
             loadDataTreeView();
             notifyIcon1.ShowBalloonTip(5000, " ", " ", ToolTipIcon.Info);
-            showThisForm(false);
+            showThisForm(_showMainWindow);
         }
         void loadDataTreeView()
         {
@@ -47,28 +52,58 @@ namespace QuickNote
             loadTreeView();
 
         }
+        void selectHookKey()
+        {
+            if (rdbtnCrlSpace.Checked)
+            {
+                _key0 = Keys.LControlKey;
+                _key1 = Keys.Space;
+            }
+            else
+            {
+                _key0 = Keys.LWin;
+                _key1 = Keys.Z;
+            }
+        }
         void loadTreeView()
         {
+
             treeV.AfterSelect += TreeV_AfterSelect;
 
             treeV.ItemHeight = 20;
             TreeNode rootTags = new TreeNode();
             rootTags.ImageIndex = 0;
-
             rootTags.Text = "All Tags";
 
+            TreeNode rootAllNotes = new TreeNode();
+            rootAllNotes.ImageIndex = 0;
+            rootAllNotes.Text = "All Notes       (" + _listNote.Count.ToString() + ")";
+
             treeV.Nodes.Add(rootTags);
+
 
             initListTag();
             if (_listTag != null)
             {
-                foreach (string tag in _listTag)
+                foreach (ANote note in _listNote)
                 {
+                    rootAllNotes.Nodes.Add(new TreeNode()
+                    {
+                        Text = note.TitleNote,
+                        NodeFont = new Font(treeV.Font.FontFamily, 10, FontStyle.Regular),
+                        ImageIndex = 1
+
+                    }
+                          );
+                }
+                foreach (TagNote tag in _listTag)
+                {
+                    int maxNoteInTag = 0;
                     TreeNode root = new TreeNode();
                     root.NodeFont = new Font("Arial", 12, FontStyle.Bold);
                     foreach (ANote note in _listNote)
                     {
-                        if (note.Tags.Contains(tag))
+                        if (note.Tags.Contains(tag.Tag))
                         {
                             root.Nodes.Add(new TreeNode()
                             {
@@ -78,13 +113,20 @@ namespace QuickNote
 
                             }
                             );
+                            maxNoteInTag++;
                         }
                     }
-                    root.Text = tag + "     (" + root.Nodes.Count + ")";
+
+                    root.Text = tag.Tag + "     (" + root.Nodes.Count + ")";
                     rootTags.Nodes.Add(root);
+                    tag.NAppFre = maxNoteInTag;
                 }
 
             }
+
+
+            treeV.Nodes.Add(rootAllNotes);
+
         }
 
         private void TreeV_AfterSelect(object sender, TreeViewEventArgs e)
@@ -101,7 +143,7 @@ namespace QuickNote
                     bool flag = true;
                     for (int i = 0; i < _listTag.Count; i++)
                     {
-                        if (_listTag[i] == tags)
+                        if (_listTag[i].Tag == tags)
                         {
                             flag = false;
                             break;
@@ -109,7 +151,7 @@ namespace QuickNote
                     }
                     if (flag)
                     {
-                        _listTag.Add(tags);
+                        _listTag.Add(new TagNote(tags, 0));
                     }
                 }
 
@@ -123,18 +165,18 @@ namespace QuickNote
         }
         private void loadDataNote()
         {
-            _listNameFile = FileDB.Inst.ShowFile(FileDB.Inst.DataPath);
+            _listNameFile = FileDB.Inst.ShowFile(FileDB.Inst.NotePath);
             if (_listNameFile.Length > 0)
             {
                 foreach (string item in _listNameFile)
                 {
-                    string fileName = FileDB.Inst.DataPath + "\\" + item;
+                    string fileName = FileDB.Inst.NotePath + "\\" + item;
                     string data = FileDB.Inst.readFile(fileName);
                     string[] tmp = data.Split(new string[] { ";\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                     if (tmp.Length == 4)
                     {
-                        string[] tagsArr = tmp[0].Split(',');
+                        string[] tagsArr = tmp[0].Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
                         List<string> listTag = new List<string>();
                         foreach (string tag in tagsArr)
                         {
@@ -178,11 +220,16 @@ namespace QuickNote
             if (show)
             {
                 this.WindowState = FormWindowState.Normal;
+                notifyIcon1.Icon = new Icon(FileDB.Inst.IconPath + "\\Noti0.ico");
+                notifyIcon1.Text = "2 click to hide window";
+                contextMenuStrip1.Items[0].Text = "Hide window";
             }
             else
             {
                 this.WindowState = FormWindowState.Minimized;
-
+                notifyIcon1.Icon = new Icon(FileDB.Inst.IconPath + "\\Noti1.ico");
+                notifyIcon1.Text = "2 click to show window";
+                contextMenuStrip1.Items[0].Text = "Show window";
             }
             this.ShowInTaskbar = show;
 
@@ -199,11 +246,11 @@ namespace QuickNote
             int count = _ListKeys.Count;
             if (count == 2)
             {
-                if (_ListKeys[0] == Keys.LControlKey)
+                if (_ListKeys[0] == _key0)
                 {
-                    if (_ListKeys[1] == Keys.Space)
+                    if (_ListKeys[1] == _key1)
                     {
-                        frmAddNote frmadd = new frmAddNote(_listNote.Count);
+                        frmAddNote frmadd = new frmAddNote(_listNote.Count, 0, _listTag);
                         this.AddOwnedForm(frmadd);
                         frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
                         frmadd.Show();
@@ -225,13 +272,46 @@ namespace QuickNote
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            showThisForm(true);
+            _showMainWindow = !_showMainWindow;
+            showThisForm(_showMainWindow);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
-            showThisForm(false);
+            _showMainWindow = !_showMainWindow;
+            showThisForm(_showMainWindow);
+        }
+        void addItemToLstView(ANote item)
+        {
+            ListViewItem tmp = new ListViewItem() { Text = item.TitleNote };
+            // Display first 50 char in column text Note on ListView
+            tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = item.TextNote.Substring(0, item.TextNote.Length > 49 ? 50 : item.TextNote.Length));
+
+            tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = item.DayCre.ToString("dd/MM/yyyy hh:mm tt"));
+            string tags = "";
+            foreach (string tg in item.Tags)
+            {
+                tags += (tg + ",");
+            }
+
+            if (tags[tags.Length - 1] == ',')
+            {
+                tags = tags.Remove(tags.Length - 1, 1);
+            }
+            tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = tags);
+
+            tmp.Font = new Font(tmp.Font.FontFamily, 11);
+            tmp.UseItemStyleForSubItems = false;
+
+            foreach (ListViewItem.ListViewSubItem sub in tmp.SubItems)
+            {
+                if (sub.Text != item.TitleNote)
+                {
+                    sub.Font = new Font("Segoe UI", 9, FontStyle.Regular);
+                }
+            }
+            lstV.Items.Add(tmp);
         }
         private void treeV_DoubleClick(object sender, EventArgs e)
         {
@@ -241,7 +321,7 @@ namespace QuickNote
             if (tr == null) { return; }
             if (!tr.Name.Equals("rootTags") && tr.Text != "")
             {
-
+                //set panel when user click on tree view
                 foreach (Control item in panelAdd.Controls)
                 {
                     if (item.Name != "tbTitle" && item.Name != "tbTag")
@@ -250,10 +330,18 @@ namespace QuickNote
                     }
                 }
                 lstV.Items.Clear();
-                foreach (string it in _listTag)
+                if (tr.Text.Contains("All Notes"))
+                {
+                    foreach (ANote allnote in _listNote)
+                    {
+                        addItemToLstView(allnote);
+                    }
+                    return;
+                }
+                foreach (TagNote it in _listTag)
                 {
                     string nodeSelected = treeV.SelectedNode.Text;
-                    if (nodeSelected.Contains(it))
+                    if (nodeSelected.Contains(it.Tag))
                     {
                         foreach (ANote item in _listNote)
                         {
@@ -264,37 +352,11 @@ namespace QuickNote
                         }
                         foreach (ANote item in _listNote)
                         {
-                            foreach (var tag in item.Tags)
+                            foreach (string tag in item.Tags)
                             {
-                                if (it.Equals(tag))
+                                if (it.Tag.Equals(tag))
                                 {
-                                    ListViewItem tmp = new ListViewItem() { Text = item.TitleNote };
-
-                                    tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = item.TextNote);
-                                    tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = item.DayCre.ToString("dd/MM/yyyy hh:mm tt"));
-                                    string tags = "";
-                                    foreach (string tg in item.Tags)
-                                    {
-                                        tags += (tg + ",");
-                                    }
-
-                                    if (tags[tags.Length - 1] == ',')
-                                    {
-                                        tags = tags.Remove(tags.Length - 1, 1);
-                                    }
-                                    tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = tags);
-
-                                    tmp.Font = new Font(tmp.Font.FontFamily, 11);
-                                    tmp.UseItemStyleForSubItems = false;
-
-                                    foreach (ListViewItem.ListViewSubItem sub in tmp.SubItems)
-                                    {
-                                        if (sub.Text != item.TitleNote)
-                                        {
-                                            sub.Font = new Font("Segoe UI", 9, FontStyle.Regular);
-                                        }
-                                    }
-                                    lstV.Items.Add(tmp);
+                                    addItemToLstView(item);
                                     break;
                                 }
                             }
@@ -304,6 +366,7 @@ namespace QuickNote
                     }
                 }
             }
+
 
         }
 
@@ -332,7 +395,7 @@ namespace QuickNote
                         cbbFontSize.Text = tbTextNote.Font.Size.ToString();
                         tbTextNote.Font = note.Font;
                         tbTextNote.ForeColor = note.Color;
-                        btnFont.BackColor = note.Color;
+                        btnColor.BackColor = note.Color;
                         return;
                     }
                 }
@@ -340,26 +403,17 @@ namespace QuickNote
             }
         }
 
-        private void btnFont_Click(object sender, EventArgs e)
-        {
-
-            if (colorDialog1.ShowDialog() == DialogResult.OK)
-            {
-                tbTextNote.ForeColor = colorDialog1.Color;
-                btnFont.BackColor = colorDialog1.Color;
-            }
-        }
 
         private void btnAddNote_Click(object sender, EventArgs e)
         {
-            frmAddNote frmadd = new frmAddNote(_listNote.Count);
+            frmAddNote frmadd = new frmAddNote(_listNote.Count, 0, _listTag);
             this.AddOwnedForm(frmadd);
             frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
             frmadd.Show();
         }
         void addSuccess(bool b)
         {
-           if(b)
+            if (b)
             {
                 btnRefresh_Click(new object(), new EventArgs());
             }
@@ -367,7 +421,7 @@ namespace QuickNote
 
         private void Frmadd_AddNote(object sender, EventArgs e)
         {
-            
+
         }
 
         private void cbbFontSize_Validated(object sender, EventArgs e)
@@ -406,7 +460,7 @@ namespace QuickNote
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            showToolStripMenuItem_Click(sender, e);
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -459,11 +513,52 @@ namespace QuickNote
         {
             treeV.Nodes.Clear();
             treeV.Refresh();
+            treeV.Focus();
 
             _listNote.Clear();
             _listNameFile = null;
             _listTag.Clear();
             loadDataTreeView();
+        }
+
+        private void pnColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                tbTextNote.ForeColor = colorDialog1.Color;
+                btnColor.BackColor = colorDialog1.Color;
+            }
+        }
+
+        private void pnColor_MouseMove(object sender, MouseEventArgs e)
+        {
+            pnColor.BackColor = Color.Silver;
+            btnFont.BackColor = Color.Silver;
+
+        }
+
+        private void pnColor_MouseLeave(object sender, EventArgs e)
+        {
+            pnColor.BackColor = Color.White;
+            btnFont.BackColor = Color.White;
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rdbtnCrlSpace_CheckedChanged(object sender, EventArgs e)
+        {
+            selectHookKey();
+        }
+
+
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            _showMainWindow = !_showMainWindow;
+            showThisForm(_showMainWindow);
         }
     }
 }
