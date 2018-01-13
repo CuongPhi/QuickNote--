@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddNote));
             this.panelAdd = new System.Windows.Forms.Panel();
+            this.btnInsertPic = new System.Windows.Forms.Button();
+            this.ptb = new System.Windows.Forms.PictureBox();
             this.pnColor = new System.Windows.Forms.Panel();
             this.btnFont = new System.Windows.Forms.Button();
             this.btnColor = new System.Windows.Forms.Button();
@@ -46,11 +48,9 @@
             this.tbTitle = new System.Windows.Forms.TextBox();
             this.tbAddTitle = new System.Windows.Forms.TextBox();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
-            this.ptb = new System.Windows.Forms.PictureBox();
-            this.btnInsertPic = new System.Windows.Forms.Button();
             this.panelAdd.SuspendLayout();
-            this.pnColor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptb)).BeginInit();
+            this.pnColor.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelAdd
@@ -73,6 +73,28 @@
             this.panelAdd.Name = "panelAdd";
             this.panelAdd.Size = new System.Drawing.Size(286, 293);
             this.panelAdd.TabIndex = 16;
+            // 
+            // btnInsertPic
+            // 
+            this.btnInsertPic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsertPic.BackgroundImage")));
+            this.btnInsertPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnInsertPic.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnInsertPic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInsertPic.Location = new System.Drawing.Point(256, 50);
+            this.btnInsertPic.Name = "btnInsertPic";
+            this.btnInsertPic.Size = new System.Drawing.Size(22, 22);
+            this.btnInsertPic.TabIndex = 31;
+            this.tt.SetToolTip(this.btnInsertPic, "Insert Picture");
+            this.btnInsertPic.UseVisualStyleBackColor = true;
+            this.btnInsertPic.Click += new System.EventHandler(this.btnInsertPic_Click);
+            // 
+            // ptb
+            // 
+            this.ptb.Location = new System.Drawing.Point(59, 175);
+            this.ptb.Name = "ptb";
+            this.ptb.Size = new System.Drawing.Size(180, 115);
+            this.ptb.TabIndex = 30;
+            this.ptb.TabStop = false;
             // 
             // pnColor
             // 
@@ -267,28 +289,6 @@
             this.tbAddTitle.TabIndex = 16;
             this.tt.SetToolTip(this.tbAddTitle, "Type title Note");
             // 
-            // ptb
-            // 
-            this.ptb.Location = new System.Drawing.Point(59, 175);
-            this.ptb.Name = "ptb";
-            this.ptb.Size = new System.Drawing.Size(180, 115);
-            this.ptb.TabIndex = 30;
-            this.ptb.TabStop = false;
-            // 
-            // btnInsertPic
-            // 
-            this.btnInsertPic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsertPic.BackgroundImage")));
-            this.btnInsertPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnInsertPic.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnInsertPic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInsertPic.Location = new System.Drawing.Point(256, 50);
-            this.btnInsertPic.Name = "btnInsertPic";
-            this.btnInsertPic.Size = new System.Drawing.Size(22, 22);
-            this.btnInsertPic.TabIndex = 31;
-            this.tt.SetToolTip(this.btnInsertPic, "Insert Picture");
-            this.btnInsertPic.UseVisualStyleBackColor = true;
-            this.btnInsertPic.Click += new System.EventHandler(this.btnInsertPic_Click);
-            // 
             // frmAddNote
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,8 +304,8 @@
             this.Load += new System.EventHandler(this.frmAddNote_Load);
             this.panelAdd.ResumeLayout(false);
             this.panelAdd.PerformLayout();
-            this.pnColor.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ptb)).EndInit();
+            this.pnColor.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

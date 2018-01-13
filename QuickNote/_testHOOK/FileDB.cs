@@ -50,8 +50,17 @@ namespace QuickNote
             {
                 using (StreamWriter writer = new StreamWriter(fs, Encoding.UTF8))
                 {
+                    
                     writer.Write(text);
                 }
+            }
+        }
+        public void deleteFile(string fileName)
+        {
+            fileName = this.NotePath + "\\" + fileName;
+            if(File.Exists(fileName))
+            {
+                File.Delete(fileName);
             }
         }
         public void writeANote(int nfileName, ANote note)
@@ -66,7 +75,7 @@ namespace QuickNote
             {
                 return;
             }
-            dataNote= dataNote.Remove(dataNote.Length - 1, 1);
+            dataNote= dataNote.Remove(dataNote.Length - 2);
             dataNote += stringSplit;
 
             dataNote += note.TitleNote;
@@ -80,6 +89,7 @@ namespace QuickNote
             string fileName = NotePath + "\\"+ nfileName.ToString();
             try
             {
+                // while file name exist (this note created after), file name ++
                 while (File.Exists(fileName))
                 {
                     fileName = NotePath + "\\" + (nfileName++).ToString();

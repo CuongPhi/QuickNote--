@@ -1,35 +1,28 @@
 ﻿using _testHOOK;
-using gma.System.Windows;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QuickNote
 {
     public partial class frmMain : Form
     {
+        #region Formm Main Windows property
         private Keys _key0 = Keys.LControlKey;
         private Keys _key1 = Keys.Space;
-
         private List<Keys> _ListKeys = new List<Keys>();
         private List<ANote> _listNote = new List<ANote>();
         string[] _listNameFile = null;
         private bool _showMainWindow = false;
         private List<TagNote> _listTag = new List<TagNote>();
-
+        private bool _isSort = true;
+        private TreeNode _rootTags = new TreeNode();
+        private TreeNode _rootAllTags = new TreeNode();
+        private string _idNoteSelected = null;
         public FontFamily[] Families { get; }
-        /// <summary>
-        /// thread hooking
-        /// </summary>
-
+        #endregion
         public frmMain()
         {
             InitializeComponent();
@@ -52,6 +45,9 @@ namespace QuickNote
             loadTreeView();
 
         }
+        /// <summary>
+        /// change shorcut key 
+        /// </summary>
         void selectHookKey()
         {
             if (rdbtnCrlSpace.Checked)
@@ -65,68 +61,72 @@ namespace QuickNote
                 _key1 = Keys.Z;
             }
         }
+        void initTreeView()
+        {
+            treeV.AfterSelect += TreeV_AfterSelect;
+            treeV.ItemHeight = 20;
+            _rootTags.ImageIndex = 0;
+            _rootTags.Text = "All Tags";
+            _rootAllTags.ImageIndex = 0;
+            _rootAllTags.Text = "All Notes       (" + _listNote.Count.ToString() + ")";
+        }
+        void loadNoteAllTags()
+        {
+            foreach (ANote note in _listNote)
+            {
+                _rootAllTags.Nodes.Add(new TreeNode()
+                {
+                    Text = note.TitleNote,
+                    NodeFont = new Font(treeV.Font.FontFamily, 10, FontStyle.Regular),
+                    ImageIndex = 1
+
+                }
+                      );
+            }
+
+        }
+        void loadNoteRootTags()
+        {
+            _rootTags.Nodes.Clear();
+            foreach (TagNote tag in _listTag)
+            {
+                int maxNoteInTag = 0;
+                TreeNode root = new TreeNode();
+                root.NodeFont = new Font("Arial", 12, FontStyle.Bold);
+                foreach (ANote note in _listNote)
+                {
+                    if (note.Tags.Contains(tag.Tag))
+                    {
+                        root.Nodes.Add(new TreeNode()
+                        {
+                            Text = note.TitleNote,
+                            NodeFont = new Font(treeV.Font.FontFamily, 10, FontStyle.Regular),
+                            ImageIndex = 1
+                        }
+                        );
+                        maxNoteInTag++;
+                    }
+                }
+                root.Text = tag.Tag + "     (" + root.Nodes.Count + ")";
+                _rootTags.Nodes.Add(root);
+                tag.NAppFre = maxNoteInTag;
+            }
+        }
         void loadTreeView()
         {
 
-            treeV.AfterSelect += TreeV_AfterSelect;
-
-            treeV.ItemHeight = 20;
-            TreeNode rootTags = new TreeNode();
-            rootTags.ImageIndex = 0;
-            rootTags.Text = "All Tags";
-
-            TreeNode rootAllNotes = new TreeNode();
-            rootAllNotes.ImageIndex = 0;
-            rootAllNotes.Text = "All Notes       (" + _listNote.Count.ToString() + ")";
-
-            treeV.Nodes.Add(rootTags);
+            initTreeView();
+            treeV.Nodes.Add(_rootTags);
 
 
-            initListTag();
+            initListTag(_isSort);
             if (_listTag != null)
             {
-                foreach (ANote note in _listNote)
-                {
-                    rootAllNotes.Nodes.Add(new TreeNode()
-                    {
-                        Text = note.TitleNote,
-                        NodeFont = new Font(treeV.Font.FontFamily, 10, FontStyle.Regular),
-                        ImageIndex = 1
-
-                    }
-                          );
-                }
-                foreach (TagNote tag in _listTag)
-                {
-                    int maxNoteInTag = 0;
-                    TreeNode root = new TreeNode();
-                    root.NodeFont = new Font("Arial", 12, FontStyle.Bold);
-                    foreach (ANote note in _listNote)
-                    {
-                        if (note.Tags.Contains(tag.Tag))
-                        {
-                            root.Nodes.Add(new TreeNode()
-                            {
-                                Text = note.TitleNote,
-                                NodeFont = new Font(treeV.Font.FontFamily, 10, FontStyle.Regular),
-                                ImageIndex = 1
-
-                            }
-                            );
-                            maxNoteInTag++;
-                        }
-                    }
-
-                    root.Text = tag.Tag + "     (" + root.Nodes.Count + ")";
-                    rootTags.Nodes.Add(root);
-                    tag.NAppFre = maxNoteInTag;
-                }
+                loadNoteAllTags();
+                loadNoteRootTags();
 
             }
-
-
-            treeV.Nodes.Add(rootAllNotes);
-
+            treeV.Nodes.Add(_rootAllTags);
         }
 
         private void TreeV_AfterSelect(object sender, TreeViewEventArgs e)
@@ -134,7 +134,7 @@ namespace QuickNote
             treeV_DoubleClick(e, new EventArgs());
         }
 
-        void initListTag()
+        void initListTag(bool isAtoZ)
         {
             foreach (ANote item in _listNote)
             {
@@ -143,6 +143,7 @@ namespace QuickNote
                     bool flag = true;
                     for (int i = 0; i < _listTag.Count; i++)
                     {
+
                         if (_listTag[i].Tag == tags)
                         {
                             flag = false;
@@ -156,13 +157,42 @@ namespace QuickNote
                 }
 
             }
+            if (isAtoZ)
+                _listTag.Sort((x, y) => x.Tag.CompareTo(y.Tag));
+            else
+                _listTag.Sort((x, y) => y.Tag.CompareTo(x.Tag));
         }
         void initsHookKey()
         {
-            UserActivityHook _uAH = new UserActivityHook(false, true);
-            _uAH.KeyDown += UAH_KeyDown;
-            _uAH.KeyUp += _uAH_KeyUp;
+            KeyBoardHook hooking = new KeyBoardHook();
+            hooking.KeyDown += Hooking_KeyDown;
+            hooking.KeyUp += Hooking_KeyUp;
         }
+
+        private void Hooking_KeyDown(object sender, KeyEventArgs e)
+        {
+            _ListKeys.Add(e.KeyCode);
+            int count = _ListKeys.Count;
+            if (count == 2)
+            {
+                if (_ListKeys[0] == _key0)
+                {
+                    if (_ListKeys[1] == _key1)
+                    {
+                        frmAddNote frmadd = new frmAddNote(_listNote.Count, (int)nmrudSizeSuggestTag.Value, _listTag);
+                        this.AddOwnedForm(frmadd);
+                        frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
+                        frmadd.Show();
+                    }
+                }
+            }
+        }
+
+        private void Hooking_KeyUp(object sender, KeyEventArgs e)
+        {
+            _ListKeys.Clear();
+        }
+
         private void loadDataNote()
         {
             _listNameFile = FileDB.Inst.ShowFile(FileDB.Inst.NotePath);
@@ -235,30 +265,6 @@ namespace QuickNote
 
         }
 
-        private void _uAH_KeyUp(object sender, KeyEventArgs e)
-        {
-            _ListKeys.Clear();
-        }
-
-        private void UAH_KeyDown(object sender, KeyEventArgs e)
-        {
-            _ListKeys.Add(e.KeyCode);
-            int count = _ListKeys.Count;
-            if (count == 2)
-            {
-                if (_ListKeys[0] == _key0)
-                {
-                    if (_ListKeys[1] == _key1)
-                    {
-                        frmAddNote frmadd = new frmAddNote(_listNote.Count, 0, _listTag);
-                        this.AddOwnedForm(frmadd);
-                        frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
-                        frmadd.Show();
-                    }
-                }
-            }
-
-        }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -292,13 +298,10 @@ namespace QuickNote
             string tags = "";
             foreach (string tg in item.Tags)
             {
-                tags += (tg + ",");
+                tags += (tg + ", ");
             }
 
-            if (tags[tags.Length - 1] == ',')
-            {
-                tags = tags.Remove(tags.Length - 1, 1);
-            }
+            tags = tags.Remove(tags.Length - 2);
             tmp.SubItems.Add(new ListViewItem.ListViewSubItem().Text = tags);
 
             tmp.Font = new Font(tmp.Font.FontFamily, 11);
@@ -317,9 +320,10 @@ namespace QuickNote
         {
             panelAdd.Hide();
             pnEdit.Hide();
+            _idNoteSelected = null;
             TreeNode tr = treeV.SelectedNode;
             if (tr == null) { return; }
-            if (!tr.Name.Equals("rootTags") && tr.Text != "")
+            if (!tr.Name.Equals("_rootTags") && tr.Text != "")
             {
                 //set panel when user click on tree view
                 foreach (Control item in panelAdd.Controls)
@@ -385,28 +389,25 @@ namespace QuickNote
                         tbAddTag.Text = "";
                         foreach (string itm in note.Tags)
                         {
-                            tbAddTag.Text += (itm + ",");
+                            tbAddTag.Text += (itm + ", ");
                         }
-                        if (tbAddTag.Text[tbAddTag.TextLength - 1] == ',')
-                        {
-                            tbAddTag.Text = tbAddTag.Text.Remove(tbAddTag.TextLength - 1, 1);
-                        }
-                        cbbFontFamily.Text = tbTextNote.Font.FontFamily.Name;
-                        cbbFontSize.Text = tbTextNote.Font.Size.ToString();
+                        tbAddTag.Text = tbAddTag.Text.Remove(tbAddTag.TextLength - 2);
+
                         tbTextNote.Font = note.Font;
                         tbTextNote.ForeColor = note.Color;
                         btnColor.BackColor = note.Color;
+                        cbbFontFamily.Text = tbTextNote.Font.FontFamily.Name;
+                        cbbFontSize.Text = tbTextNote.Font.Size.ToString();
+                        _idNoteSelected = note.IdNote;
                         return;
                     }
                 }
                 return;
             }
         }
-
-
         private void btnAddNote_Click(object sender, EventArgs e)
         {
-            frmAddNote frmadd = new frmAddNote(_listNote.Count, 0, _listTag);
+            frmAddNote frmadd = new frmAddNote(_listNote.Count, (int)nmrudSizeSuggestTag.Value, _listTag);
             this.AddOwnedForm(frmadd);
             frmadd.AddNote += new frmAddNote.AddNoteHandler(addSuccess);
             frmadd.Show();
@@ -418,7 +419,6 @@ namespace QuickNote
                 btnRefresh_Click(new object(), new EventArgs());
             }
         }
-
         private void Frmadd_AddNote(object sender, EventArgs e)
         {
 
@@ -512,12 +512,15 @@ namespace QuickNote
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             treeV.Nodes.Clear();
-            treeV.Refresh();
-            treeV.Focus();
-
+            _rootTags.Nodes.Clear();
+            _rootAllTags.Nodes.Clear();
             _listNote.Clear();
             _listNameFile = null;
             _listTag.Clear();
+            lstV.Items.Clear();
+            panelAdd.Hide();
+            pnEdit.Hide();
+
             loadDataTreeView();
         }
 
@@ -545,7 +548,61 @@ namespace QuickNote
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            string tags = "";
+            string title = "";
+            string textNote = "";
+            Color cl = tbTextNote.ForeColor;
+            Font fnt = tbTextNote.Font;
+            string fntFam = "";
+            string fntSize = "";
+            if (tbTextNote.Text.Length < 2)
+            {
+                MessageBox.Show("Text very short !");
+                return;
+            }
+            if (tbAddTag.Text == "" || tbAddTitle.Text == "")
+            {
+                if (MessageBox.Show("Do you want to empty tags or title ??", "Error input !",
+                    MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    if (tbAddTag.Text == "")
+                    {
+                        tags = "None";
+                    }
+                    else
+                    {
+                        tags = tbAddTag.Text;
+                    }
+                    if (tbAddTitle.Text == "")
+                    {
+                        title = "None";
+                    }
+                    else
+                    {
+                        title = tbAddTitle.Text;
+                    }
 
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                tags = tbAddTag.Text;
+                title = tbAddTitle.Text;
+            }
+            textNote = tbTextNote.Text;
+
+            fntFam = cbbFontFamily.Text;
+            fntSize = cbbFontSize.Text;
+
+            ANote note = new ANote(_idNoteSelected, title, textNote, tags, cl, fnt, fntFam, fntSize);
+            FileDB.Inst.deleteFile(_idNoteSelected);
+            FileDB.Inst.writeANote(Int32.Parse(_idNoteSelected), note);
+
+            btnRefresh_Click(sender, e);
         }
 
         private void rdbtnCrlSpace_CheckedChanged(object sender, EventArgs e)
@@ -553,12 +610,28 @@ namespace QuickNote
             selectHookKey();
         }
 
-
-
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
             _showMainWindow = !_showMainWindow;
             showThisForm(_showMainWindow);
+        }
+
+        private void btnSortTreeV_Click(object sender, EventArgs e)
+        {
+            _isSort = !_isSort; ;
+            initListTag(_isSort);
+            loadNoteRootTags();
+        }
+
+        private void statisticToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_listTag.Count < 1 || _listTag == null)
+            {
+                MessageBox.Show("Data not found !");
+                return;
+            }
+            frmStatistic fS = new frmStatistic(_listTag);
+            fS.ShowDialog();
         }
     }
 }

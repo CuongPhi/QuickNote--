@@ -26,7 +26,7 @@ namespace QuickNote
             this.Font = font;
             this.color = cl;
         }
-        public ANote(string id, string title, string text, string tags, Color cl, Font font , string fam, string size)
+        public ANote(string id, string title, string text, string tags, Color cl, Font font , string fam, string size, byte[] picture = null)
         {
             this.DayCre = dayCre;
             this.IdNote = id;
@@ -35,7 +35,7 @@ namespace QuickNote
             this.Font =  new Font(fam, font.Size, font.Style);
             this.color = cl;
             this.Tags = new List<string>();
-            string []tag= tags.Split(',');
+            string []tag= tags.Split( new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string item in tag)
             {
                 this.Tags.Add(item); 
