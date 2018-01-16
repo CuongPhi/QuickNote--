@@ -31,8 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAddNote));
             this.panelAdd = new System.Windows.Forms.Panel();
-            this.btnInsertPic = new System.Windows.Forms.Button();
-            this.ptb = new System.Windows.Forms.PictureBox();
             this.pnColor = new System.Windows.Forms.Panel();
             this.btnFont = new System.Windows.Forms.Button();
             this.btnColor = new System.Windows.Forms.Button();
@@ -49,14 +47,11 @@
             this.tbAddTitle = new System.Windows.Forms.TextBox();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
             this.panelAdd.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptb)).BeginInit();
             this.pnColor.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelAdd
             // 
-            this.panelAdd.Controls.Add(this.btnInsertPic);
-            this.panelAdd.Controls.Add(this.ptb);
             this.panelAdd.Controls.Add(this.pnColor);
             this.panelAdd.Controls.Add(this.cbbFontSize);
             this.panelAdd.Controls.Add(this.cbbFontFamily);
@@ -73,28 +68,6 @@
             this.panelAdd.Name = "panelAdd";
             this.panelAdd.Size = new System.Drawing.Size(286, 293);
             this.panelAdd.TabIndex = 16;
-            // 
-            // btnInsertPic
-            // 
-            this.btnInsertPic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsertPic.BackgroundImage")));
-            this.btnInsertPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnInsertPic.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnInsertPic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInsertPic.Location = new System.Drawing.Point(256, 50);
-            this.btnInsertPic.Name = "btnInsertPic";
-            this.btnInsertPic.Size = new System.Drawing.Size(22, 22);
-            this.btnInsertPic.TabIndex = 31;
-            this.tt.SetToolTip(this.btnInsertPic, "Insert Picture");
-            this.btnInsertPic.UseVisualStyleBackColor = true;
-            this.btnInsertPic.Click += new System.EventHandler(this.btnInsertPic_Click);
-            // 
-            // ptb
-            // 
-            this.ptb.Location = new System.Drawing.Point(59, 175);
-            this.ptb.Name = "ptb";
-            this.ptb.Size = new System.Drawing.Size(180, 115);
-            this.ptb.TabIndex = 30;
-            this.ptb.TabStop = false;
             // 
             // pnColor
             // 
@@ -179,6 +152,7 @@
             // 
             // btnUnderL
             // 
+            this.btnUnderL.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnUnderL.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUnderL.BackgroundImage")));
             this.btnUnderL.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnUnderL.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
@@ -188,11 +162,12 @@
             this.btnUnderL.Size = new System.Drawing.Size(15, 16);
             this.btnUnderL.TabIndex = 26;
             this.tt.SetToolTip(this.btnUnderL, "Text Underline");
-            this.btnUnderL.UseVisualStyleBackColor = true;
+            this.btnUnderL.UseVisualStyleBackColor = false;
             this.btnUnderL.Click += new System.EventHandler(this.button3_Click);
             // 
             // btnIta
             // 
+            this.btnIta.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnIta.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnIta.BackgroundImage")));
             this.btnIta.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnIta.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
@@ -202,11 +177,12 @@
             this.btnIta.Size = new System.Drawing.Size(15, 15);
             this.btnIta.TabIndex = 25;
             this.tt.SetToolTip(this.btnIta, "Text Italic");
-            this.btnIta.UseVisualStyleBackColor = true;
+            this.btnIta.UseVisualStyleBackColor = false;
             this.btnIta.Click += new System.EventHandler(this.btnIta_Click);
             // 
             // btnBold
             // 
+            this.btnBold.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnBold.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBold.BackgroundImage")));
             this.btnBold.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.btnBold.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
@@ -216,7 +192,7 @@
             this.btnBold.Size = new System.Drawing.Size(15, 15);
             this.btnBold.TabIndex = 24;
             this.tt.SetToolTip(this.btnBold, "Text Bold");
-            this.btnBold.UseVisualStyleBackColor = true;
+            this.btnBold.UseVisualStyleBackColor = false;
             this.btnBold.Click += new System.EventHandler(this.btnBold_Click);
             // 
             // btnSave
@@ -243,6 +219,7 @@
             this.tbTextNote.TabIndex = 20;
             this.tbTextNote.Text = "";
             this.tt.SetToolTip(this.tbTextNote, "Type text Note");
+            this.tbTextNote.TextChanged += new System.EventHandler(this.tbTextNote_TextChanged);
             // 
             // tbAddTag
             // 
@@ -259,7 +236,7 @@
             // 
             // tbTag
             // 
-            this.tbTag.Font = new System.Drawing.Font(".VnArial", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbTag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTag.Location = new System.Drawing.Point(11, 0);
             this.tbTag.Name = "tbTag";
             this.tbTag.ReadOnly = true;
@@ -270,7 +247,7 @@
             // 
             // tbTitle
             // 
-            this.tbTitle.Font = new System.Drawing.Font(".VnArial", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbTitle.Location = new System.Drawing.Point(11, 21);
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.ReadOnly = true;
@@ -293,18 +270,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightBlue;
             this.ClientSize = new System.Drawing.Size(293, 296);
             this.Controls.Add(this.panelAdd);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmAddNote";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddNote";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmAddNote_FormClosed);
             this.Load += new System.EventHandler(this.frmAddNote_Load);
             this.panelAdd.ResumeLayout(false);
             this.panelAdd.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ptb)).EndInit();
             this.pnColor.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -328,7 +306,5 @@
         private System.Windows.Forms.Button btnFont;
         private System.Windows.Forms.Button btnColor;
         private System.Windows.Forms.ToolTip tt;
-        private System.Windows.Forms.PictureBox ptb;
-        private System.Windows.Forms.Button btnInsertPic;
     }
 }

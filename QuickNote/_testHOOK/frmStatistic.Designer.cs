@@ -34,11 +34,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmStatistic));
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rdbtnBar = new System.Windows.Forms.RadioButton();
+            this.drbtnRadar = new System.Windows.Forms.RadioButton();
             this.rdbtnPyramid = new System.Windows.Forms.RadioButton();
             this.rdbtnPie = new System.Windows.Forms.RadioButton();
             this.rdbtnColumn = new System.Windows.Forms.RadioButton();
-            this.drbtnRadar = new System.Windows.Forms.RadioButton();
-            this.rdbtnBar = new System.Windows.Forms.RadioButton();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.typeViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.primaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,6 +80,30 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "TypeChart";
             // 
+            // rdbtnBar
+            // 
+            this.rdbtnBar.AutoSize = true;
+            this.rdbtnBar.Checked = true;
+            this.rdbtnBar.Location = new System.Drawing.Point(104, 15);
+            this.rdbtnBar.Name = "rdbtnBar";
+            this.rdbtnBar.Size = new System.Drawing.Size(41, 17);
+            this.rdbtnBar.TabIndex = 4;
+            this.rdbtnBar.TabStop = true;
+            this.rdbtnBar.Text = "Bar";
+            this.rdbtnBar.UseVisualStyleBackColor = true;
+            this.rdbtnBar.CheckedChanged += new System.EventHandler(this.rdbtnBar_CheckedChanged);
+            // 
+            // drbtnRadar
+            // 
+            this.drbtnRadar.AutoSize = true;
+            this.drbtnRadar.Location = new System.Drawing.Point(379, 15);
+            this.drbtnRadar.Name = "drbtnRadar";
+            this.drbtnRadar.Size = new System.Drawing.Size(54, 17);
+            this.drbtnRadar.TabIndex = 3;
+            this.drbtnRadar.Text = "Radar";
+            this.drbtnRadar.UseVisualStyleBackColor = true;
+            this.drbtnRadar.CheckedChanged += new System.EventHandler(this.drbtnRadar_CheckedChanged);
+            // 
             // rdbtnPyramid
             // 
             this.rdbtnPyramid.AutoSize = true;
@@ -113,30 +137,6 @@
             this.rdbtnColumn.UseVisualStyleBackColor = true;
             this.rdbtnColumn.CheckedChanged += new System.EventHandler(this.rdbtnColumn_CheckedChanged);
             // 
-            // drbtnRadar
-            // 
-            this.drbtnRadar.AutoSize = true;
-            this.drbtnRadar.Location = new System.Drawing.Point(379, 15);
-            this.drbtnRadar.Name = "drbtnRadar";
-            this.drbtnRadar.Size = new System.Drawing.Size(54, 17);
-            this.drbtnRadar.TabIndex = 3;
-            this.drbtnRadar.Text = "Radar";
-            this.drbtnRadar.UseVisualStyleBackColor = true;
-            this.drbtnRadar.CheckedChanged += new System.EventHandler(this.drbtnRadar_CheckedChanged);
-            // 
-            // rdbtnBar
-            // 
-            this.rdbtnBar.AutoSize = true;
-            this.rdbtnBar.Checked = true;
-            this.rdbtnBar.Location = new System.Drawing.Point(104, 15);
-            this.rdbtnBar.Name = "rdbtnBar";
-            this.rdbtnBar.Size = new System.Drawing.Size(41, 17);
-            this.rdbtnBar.TabIndex = 4;
-            this.rdbtnBar.TabStop = true;
-            this.rdbtnBar.Text = "Bar";
-            this.rdbtnBar.UseVisualStyleBackColor = true;
-            this.rdbtnBar.CheckedChanged += new System.EventHandler(this.rdbtnBar_CheckedChanged);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -163,14 +163,14 @@
             this.primaryToolStripMenuItem.Checked = true;
             this.primaryToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.primaryToolStripMenuItem.Name = "primaryToolStripMenuItem";
-            this.primaryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.primaryToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.primaryToolStripMenuItem.Text = "Primary";
             this.primaryToolStripMenuItem.Click += new System.EventHandler(this.primaryToolStripMenuItem_Click);
             // 
             // secondaryToolStripMenuItem
             // 
             this.secondaryToolStripMenuItem.Name = "secondaryToolStripMenuItem";
-            this.secondaryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.secondaryToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.secondaryToolStripMenuItem.Text = "Secondary";
             this.secondaryToolStripMenuItem.Click += new System.EventHandler(this.secondaryToolStripMenuItem_Click);
             // 

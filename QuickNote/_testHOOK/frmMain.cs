@@ -36,7 +36,7 @@ namespace QuickNote
             loadDataCbbFont();
             initsHookKey();
             loadDataTreeView();
-            notifyIcon1.ShowBalloonTip(5000, " ", " ", ToolTipIcon.Info);
+            notifyIcon1.ShowBalloonTip(5000, "QuickNote-- was started", "Double click to show window", ToolTipIcon.Info);
             showThisForm(_showMainWindow);
         }
         void loadDataTreeView()
@@ -632,6 +632,28 @@ namespace QuickNote
             }
             frmStatistic fS = new frmStatistic(_listTag);
             fS.ShowDialog();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("QuickNote - Final Project of Windows Programming 2017 FIT HCMUS","Made by Cuong Phi 1512050");
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("www.fb.com/ficuong");
+            }
+            catch
+            {
+                MessageBox.Show("nficuong@gmail.com","Contact me with email:");
+            }
+        }
+
+        private void statitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            statisticToolStripMenuItem_Click(sender, e);
         }
     }
 }

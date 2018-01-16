@@ -35,11 +35,10 @@ namespace QuickNote
             _listTag = new List<TagNote>(listTag);
             _suggTag = suggTag;
         }
-
+        
         private void frmAddNote_Load(object sender, EventArgs e)
         {
-            this.ptb.Hide();
-            this.ptb.Enabled = false;
+            
             foreach (FontFamily item in FontFamily.Families)
             {
                 cbbFontFamily.Items.Add(item.Name);
@@ -277,17 +276,11 @@ namespace QuickNote
             catch { }
         }
 
-        private void btnInsertPic_Click(object sender, EventArgs e)
+        
+
+        private void tbTextNote_TextChanged(object sender, EventArgs e)
         {
-            ptb.Enabled = !ptb.Enabled;
-            if (ptb.Enabled)
-            {
-                ptb.Show();
-            }
-            else
-            {
-                ptb.Hide();
-            }
+
         }
     }
 

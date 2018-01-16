@@ -38,11 +38,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.statisticToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.pnEdit = new System.Windows.Forms.Panel();
-            this.btnInsertPic = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.pnColor = new System.Windows.Forms.Panel();
             this.btnFont = new System.Windows.Forms.Button();
@@ -77,7 +77,6 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.rdbtnCrlSpace = new System.Windows.Forms.RadioButton();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
-            this.statisticToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -108,25 +107,26 @@
             this.statitToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
             // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showToolStripMenuItem.Text = "Show window";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
             // statitToolStripMenuItem
             // 
             this.statitToolStripMenuItem.Name = "statitToolStripMenuItem";
-            this.statitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.statitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.statitToolStripMenuItem.Text = "Statistics";
+            this.statitToolStripMenuItem.Click += new System.EventHandler(this.statitToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -155,21 +155,30 @@
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(98, 22);
             this.exitToolStripMenuItem1.Text = "Hide";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
+            // statisticToolStripMenuItem
+            // 
+            this.statisticToolStripMenuItem.Name = "statisticToolStripMenuItem";
+            this.statisticToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.statisticToolStripMenuItem.Text = "Statistic";
+            this.statisticToolStripMenuItem.Click += new System.EventHandler(this.statisticToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -186,7 +195,6 @@
             // 
             // pnEdit
             // 
-            this.pnEdit.Controls.Add(this.btnInsertPic);
             this.pnEdit.Controls.Add(this.btnEdit);
             this.pnEdit.Controls.Add(this.pnColor);
             this.pnEdit.Controls.Add(this.cbbFontSize);
@@ -198,19 +206,6 @@
             this.pnEdit.Name = "pnEdit";
             this.pnEdit.Size = new System.Drawing.Size(905, 30);
             this.pnEdit.TabIndex = 17;
-            // 
-            // btnInsertPic
-            // 
-            this.btnInsertPic.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsertPic.BackgroundImage")));
-            this.btnInsertPic.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnInsertPic.FlatAppearance.BorderColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnInsertPic.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnInsertPic.Location = new System.Drawing.Point(408, 7);
-            this.btnInsertPic.Name = "btnInsertPic";
-            this.btnInsertPic.Size = new System.Drawing.Size(22, 22);
-            this.btnInsertPic.TabIndex = 32;
-            this.tt.SetToolTip(this.btnInsertPic, "Insert picture from your computer");
-            this.btnInsertPic.UseVisualStyleBackColor = true;
             // 
             // btnEdit
             // 
@@ -497,11 +492,12 @@
             // 
             // btnSortTreeV
             // 
-            this.btnSortTreeV.Location = new System.Drawing.Point(152, 6);
+            this.btnSortTreeV.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSortTreeV.BackgroundImage")));
+            this.btnSortTreeV.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnSortTreeV.Location = new System.Drawing.Point(108, 2);
             this.btnSortTreeV.Name = "btnSortTreeV";
-            this.btnSortTreeV.Size = new System.Drawing.Size(75, 23);
+            this.btnSortTreeV.Size = new System.Drawing.Size(75, 29);
             this.btnSortTreeV.TabIndex = 13;
-            this.btnSortTreeV.Text = "Sort";
             this.tt.SetToolTip(this.btnSortTreeV, "Sort Tags List");
             this.btnSortTreeV.UseVisualStyleBackColor = true;
             this.btnSortTreeV.Click += new System.EventHandler(this.btnSortTreeV_Click);
@@ -517,13 +513,15 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(71, 6);
+            this.btnRefresh.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.btnRefresh.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRefresh.BackgroundImage")));
+            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnRefresh.Location = new System.Drawing.Point(19, 2);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(72, 29);
             this.btnRefresh.TabIndex = 10;
-            this.btnRefresh.Text = "Refresh";
             this.tt.SetToolTip(this.btnRefresh, "Refresh Tree view");
-            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnAddNote
@@ -598,18 +596,11 @@
             this.rdbtnCrlSpace.UseVisualStyleBackColor = true;
             this.rdbtnCrlSpace.CheckedChanged += new System.EventHandler(this.rdbtnCrlSpace_CheckedChanged);
             // 
-            // statisticToolStripMenuItem
-            // 
-            this.statisticToolStripMenuItem.Name = "statisticToolStripMenuItem";
-            this.statisticToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.statisticToolStripMenuItem.Text = "Statistic";
-            this.statisticToolStripMenuItem.Click += new System.EventHandler(this.statisticToolStripMenuItem_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1192, 606);
+            this.ClientSize = new System.Drawing.Size(1192, 551);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.groupBox1);
@@ -686,7 +677,6 @@
         private System.Windows.Forms.RadioButton rdbtnCrlSpace;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.ToolStripMenuItem statitToolStripMenuItem;
-        private System.Windows.Forms.Button btnInsertPic;
         private System.Windows.Forms.Button btnSortTreeV;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolTip tt;
