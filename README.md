@@ -1,6 +1,6 @@
 # QUICKNOTE--
 ## The Final Project Windows Programming 2017 FIT HCMUS
-## Nguyen Phi Cuong 1512050 
+## Nguyen Phi Cuong | 1512050 | nficuong@gmail.com 
 ## Main success scenario and additional flows
 ### 1. User launches the app. An icon  will be added to notification area
 ####	+ User can right click on it to see menu: View notes, View statitistics, Exit.
